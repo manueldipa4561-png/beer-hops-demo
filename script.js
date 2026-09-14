@@ -2,7 +2,9 @@ const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)]
 const $ = (selector, scope = document) => scope.querySelector(selector);
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// Progressive reveal animations.
+// Progressive reveal animations. Image-reveal elements must be observed too;
+// otherwise their clip-path keeps them visually hidden while still reserving layout space.
+const revealTargets = $$('.reveal, .image-reveal');
 if ('IntersectionObserver' in window && !reducedMotion) {
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -11,14 +13,11 @@ if ('IntersectionObserver' in window && !reducedMotion) {
         revealObserver.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.12, rootMargin: '0px 0px -35px' });
+  }, { threshold: 0.1, rootMargin: '0px 0px -28px' });
 
-  $$('.reveal').forEach((el, index) => {
-    el.style.transitionDelay = `${Math.min(index % 3, 2) * 55}ms`;
-    revealObserver.observe(el);
-  });
+  revealTargets.forEach((el) => revealObserver.observe(el));
 } else {
-  $$('.reveal').forEach((el) => el.classList.add('visible'));
+  revealTargets.forEach((el) => el.classList.add('visible'));
 }
 
 // Header state.
@@ -126,6 +125,58 @@ if (finePointer && !reducedMotion) {
       el.style.transform = `translate(${x * 0.07}px, ${y * 0.07}px)`;
     });
     el.addEventListener('pointerleave', () => { el.style.transform = ''; });
+  });
+}
+
+// CRAFT. AFTER DARK. — restrained pointer-responsive depth.
+// Decorative only: all content remains visible and complete without this behavior.
+const galleryPointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+if (!reducedMotion && galleryPointer.matches) {
+  $$('.gallery-item').forEach((tile, index) => {
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+    let frame = 0;
+
+    const maxRotateX = index === 0 ? 3 : 3.5;
+    const maxRotateY = index === 0 ? 4 : 4.5;
+
+    const renderTilt = () => {
+      currentX += (targetX - currentX) * 0.16;
+      currentY += (targetY - currentY) * 0.16;
+
+      const settled = Math.abs(targetX - currentX) < 0.015 && Math.abs(targetY - currentY) < 0.015;
+      tile.style.transform = `rotateX(${currentX.toFixed(3)}deg) rotateY(${currentY.toFixed(3)}deg)`;
+
+      if (!settled) {
+        frame = requestAnimationFrame(renderTilt);
+      } else {
+        currentX = targetX;
+        currentY = targetY;
+        if (targetX === 0 && targetY === 0) tile.style.transform = '';
+        frame = 0;
+      }
+    };
+
+    const requestTilt = () => {
+      if (!frame) frame = requestAnimationFrame(renderTilt);
+    };
+
+    tile.addEventListener('pointermove', (event) => {
+      const rect = tile.getBoundingClientRect();
+      const x = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+      const y = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+      targetX = -y * maxRotateX;
+      targetY = x * maxRotateY;
+      requestTilt();
+    }, { passive: true });
+
+    tile.addEventListener('pointerleave', () => {
+      targetX = 0;
+      targetY = 0;
+      requestTilt();
+    });
   });
 }
 
