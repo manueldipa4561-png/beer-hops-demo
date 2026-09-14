@@ -1,204 +1,185 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0a0c0a" />
-  <meta name="description" content="Beer Hops Club — demo programma fedeltà con QR personalizzato." />
-  <title>Beer Hops Club — Loyalty Demo</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="scanner.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
-  <script src="app.js" defer></script>
-</head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="#0a0c0a" name="theme-color"/>
+<meta content="Beer Hops Club — demo programma fedeltà con QR personalizzato." name="description"/>
+<title>Beer Hops Club — Loyalty Demo</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="styles.css" rel="stylesheet"/>
+<link href="scanner.css" rel="stylesheet"/>
+<script defer="" src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script defer="" src="app.js"></script>
+<link href="demo-safety.css" rel="stylesheet"/><meta content="noindex, follow" name="robots"/><link href="https://joyful-sprinkles-4b402e.netlify.app/club/index.html" rel="canonical"/></head>
 <body>
-  <div class="noise" aria-hidden="true"></div>
-
-  <header class="club-header">
-    <a class="brand" href="../" aria-label="Torna al sito Beer Hops">
-      <span class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 64 64"><path d="M32 5c6 8 8 15 7 21 4-5 9-8 15-9-1 8-5 14-11 18 5-1 9 0 13 2-4 7-10 11-18 12l-1 10h-7l1-10c-8-1-14-5-18-12 4-2 8-3 13-2-6-4-10-10-11-18 6 1 11 4 15 9-1-6 1-13 7-21Z" fill="currentColor"/></svg>
-      </span>
-      <span><strong>BEER HOPS</strong><small>CLUB · LOYALTY DEMO</small></span>
-    </a>
-    <button class="staff-switch" id="staff-switch" type="button">Modalità staff</button>
-  </header>
-
-  <main>
-    <section class="hero" id="landing-view">
-      <div class="hero-copy">
-        <p class="eyebrow">BEER HOPS CLUB</p>
-        <h1>TORNA.<br><span>SCANSIONA.</span><br>PREMIATI.</h1>
-        <p class="lead">Una tessera fedeltà digitale, senza app da scaricare. Ogni visita avvicina alla prossima ricompensa.</p>
-        <div class="hero-actions">
-          <button class="button primary" id="join-btn" type="button">Entra nel Club</button>
-          <button class="button secondary" id="demo-member-btn" type="button">Apri profilo demo</button>
-        </div>
-      </div>
-
-      <div class="reward-card dark-card">
-        <span class="card-label">COME FUNZIONA</span>
-        <div class="steps">
-          <div><strong>01</strong><p>Registrati in pochi secondi.</p></div>
-          <div><strong>02</strong><p>Ricevi il tuo QR personale.</p></div>
-          <div><strong>03</strong><p>Mostralo a ogni visita.</p></div>
-          <div><strong>04</strong><p>Al 6° timbro sblocchi il premio.</p></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="panel hidden" id="signup-view" aria-labelledby="signup-title">
-      <button class="back-link" data-back type="button">← Torna indietro</button>
-      <div class="panel-grid">
-        <div>
-          <p class="eyebrow">ISCRIZIONE</p>
-          <h2 id="signup-title">IL TUO CLUB.<br>IL TUO QR.</h2>
-          <p class="muted">Demo non collegata a sistemi reali di Beer Hops. I dati restano solo in questo browser.</p>
-        </div>
-        <form class="signup-form" id="signup-form">
-          <label>Nome
-            <input id="member-name" name="name" type="text" autocomplete="name" placeholder="Mario" required maxlength="40" />
-          </label>
-          <label>Email
-            <input id="member-email" name="email" type="email" autocomplete="email" placeholder="mario@email.it" required maxlength="80" />
-          </label>
-          <label class="check"><input id="privacy-check" type="checkbox" required /> <span>Accetto di partecipare a questa simulazione dimostrativa.</span></label>
-          <button class="button primary full" type="submit">Crea il mio QR</button>
-        </form>
-      </div>
-    </section>
-
-    <section class="panel hidden" id="wallet-view" aria-labelledby="wallet-title">
-      <div class="wallet-head">
-        <div>
-          <p class="eyebrow">MEMBER WALLET</p>
-          <h2 id="wallet-title">CIAO, <span id="wallet-name">MARIO</span>.</h2>
-          <p class="muted">Quando ordini, apri questa tessera e mostra il QR allo staff.</p>
-        </div>
-        <button class="button secondary compact" id="new-member-btn" type="button">Nuovo profilo</button>
-      </div>
-
-      <div class="wallet-grid">
-        <article class="member-card dark-card" id="member-card">
-          <div class="member-card-top">
-            <span>BEER HOPS CLUB</span>
-            <span id="member-id">BH-000000</span>
-          </div>
-          <div class="scan-ready-pill"><span></span> PRONTO DA SCANSIONARE</div>
-          <div class="qr-wrap"><div id="member-qr" aria-label="QR personale del membro"></div></div>
-          <p class="qr-note">QR personale · demo</p>
-          <button class="button secondary full qr-present-btn" id="present-qr" type="button">Mostra QR al banco</button>
-        </article>
-
-        <article class="progress-card">
-          <span class="card-label">IL TUO PERCORSO</span>
-          <div class="progress-number"><strong id="stamp-count">0</strong><span>/ 6 TIMBRI</span></div>
-          <div class="stamps" id="stamps" aria-label="Progressi fedeltà"></div>
-          <p id="progress-copy">Ti mancano 6 visite per sbloccare il premio.</p>
-          <div class="reward-status" id="reward-status">
-            <span>PREMIO</span>
-            <strong>1 consumazione selezionata*</strong>
-            <small>*Esempio dimostrativo, non offerta reale.</small>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section class="panel hidden" id="staff-view" aria-labelledby="staff-title">
-      <div class="wallet-head">
-        <div>
-          <p class="eyebrow">STAFF DEMO</p>
-          <h2 id="staff-title">GESTISCI I TIMBRI.</h2>
-          <p class="muted">Scansiona il QR del cliente oppure cerca il codice tessera manualmente.</p>
-        </div>
-        <button class="button secondary compact" id="customer-switch" type="button">Vista cliente</button>
-      </div>
-
-      <div class="staff-grid">
-        <article class="staff-search">
-          <span class="card-label">IDENTIFICA MEMBRO</span>
-          <button class="scan-launch" id="open-scanner" type="button">
-            <span class="scan-launch-icon" aria-hidden="true">⌗</span>
-            <span><strong>Scansiona QR</strong><small>Apri fotocamera / demo scanner</small></span>
-            <span aria-hidden="true">→</span>
-          </button>
-          <div class="manual-divider"><span>oppure</span></div>
-          <label>Codice tessera
-            <input id="staff-code" type="text" placeholder="BH-XXXXXX" autocomplete="off" />
-          </label>
-          <div class="staff-actions-row">
-            <button class="button primary" id="staff-find" type="button">Apri tessera</button>
-            <button class="button secondary" id="staff-demo" type="button">Carica demo</button>
-          </div>
-        </article>
-
-        <article class="staff-member hidden" id="staff-member">
-          <div class="staff-member-head">
-            <div><span class="card-label">MEMBRO</span><h3 id="staff-name">—</h3><p id="staff-id">—</p></div>
-            <div class="staff-big"><strong id="staff-stamps">0</strong><span>/ 6</span></div>
-          </div>
-          <div class="staff-buttons">
-            <button class="button primary" id="add-stamp" type="button">+ Aggiungi timbro</button>
-            <button class="button secondary" id="remove-stamp" type="button">− Rimuovi</button>
-            <button class="button reward" id="redeem-reward" type="button">Riscatta premio</button>
-          </div>
-          <p class="tiny" id="staff-message" aria-live="polite"></p>
-        </article>
-      </div>
-    </section>
-
-    <section class="scanner-view hidden" id="scan-view" aria-labelledby="scan-title">
-      <div class="scanner-topbar">
-        <button class="scanner-close" id="close-scanner" type="button" aria-label="Chiudi scanner">×</button>
-        <div><span>BEER HOPS CLUB</span><strong>QR SCANNER</strong></div>
-        <span class="scanner-secure">● LIVE</span>
-      </div>
-
-      <div class="scanner-stage">
-        <video id="scanner-video" playsinline muted aria-label="Anteprima fotocamera per scansione QR"></video>
-        <div class="scanner-placeholder" id="scanner-placeholder" aria-hidden="true"><div class="scanner-grid-art"></div></div>
-        <div class="scanner-vignette"></div>
-        <div class="scan-frame" aria-hidden="true"><i></i><i></i><i></i><i></i><span class="scan-line"></span></div>
-        <div class="scanner-copy">
-          <p class="eyebrow">SCANSIONA TESSERA</p>
-          <h2 id="scan-title">INQUADRA<br>IL QR.</h2>
-          <p id="scanner-status">Allinea il QR personale del cliente all'interno del riquadro.</p>
-        </div>
-      </div>
-
-      <div class="scanner-controls">
-        <button class="button primary" id="start-camera" type="button">Attiva fotocamera</button>
-        <button class="button secondary" id="simulate-scan" type="button">Simula QR demo</button>
-        <button class="scanner-manual-toggle" id="scanner-manual-toggle" type="button">Inserisci codice manualmente</button>
-        <div class="scanner-manual hidden" id="scanner-manual">
-          <input id="scanner-code" type="text" placeholder="BH-XXXXXX" autocomplete="off" />
-          <button class="button secondary" id="scanner-open-code" type="button">Apri</button>
-        </div>
-      </div>
-
-      <div class="scan-success hidden" id="scan-success" role="status" aria-live="polite">
-        <div class="success-check">✓</div>
-        <span>QR RICONOSCIUTO</span>
-        <strong id="scan-success-name">Mario</strong>
-        <p id="scan-success-code">BH-DEMO01</p>
-      </div>
-    </section>
-  </main>
-
-  <div class="qr-present-overlay hidden" id="qr-present-overlay" role="dialog" aria-modal="true" aria-label="QR tessera a schermo intero">
-    <button class="qr-present-close" id="qr-present-close" type="button" aria-label="Chiudi QR">×</button>
-    <p>BEER HOPS CLUB</p>
-    <div class="present-qr-box" id="present-qr-box"></div>
-    <strong id="present-member-code">BH-000000</strong>
-    <span>Mostra questo codice allo staff</span>
-  </div>
-
-  <footer class="club-footer">
-    <p>Beer Hops Club · concept dimostrativo non commissionato</p>
-    <a href="../">Torna al sito Beer Hops ↗</a>
-  </footer>
+<div aria-hidden="true" class="noise"></div>
+<header class="club-header">
+<a aria-label="Torna al sito Beer Hops" class="brand" href="../">
+<span aria-hidden="true" class="brand-mark">
+<svg viewbox="0 0 64 64"><path d="M32 5c6 8 8 15 7 21 4-5 9-8 15-9-1 8-5 14-11 18 5-1 9 0 13 2-4 7-10 11-18 12l-1 10h-7l1-10c-8-1-14-5-18-12 4-2 8-3 13-2-6-4-10-10-11-18 6 1 11 4 15 9-1-6 1-13 7-21Z" fill="currentColor"></path></svg>
+</span>
+<span><strong>BEER HOPS</strong><small>CLUB · LOYALTY DEMO</small></span>
+</a>
+<button class="staff-switch" id="staff-switch" type="button">Modalità staff</button>
+</header><aside aria-label="Informazioni sulla simulazione" class="demo-disclosure"><strong>Simulazione Club · nessun premio reale</strong><p>Tessere e timbri funzionano solo in questo browser. La vista staff è aperta per provare il flusso: non è un accesso autenticato. Usa soltanto dati fittizi.</p><button id="reset-demo" type="button">Azzera questa simulazione</button><p id="storage-status" role="status"></p></aside>
+<main><noscript>Il Club richiede JavaScript per la simulazione. Puoi comunque tornare al sito Beer Hops con il collegamento in alto.</noscript>
+<section class="hero" id="landing-view">
+<div class="hero-copy">
+<p class="eyebrow">BEER HOPS CLUB</p>
+<h1>TORNA.<br/><span>SCANSIONA.</span><br/>PREMIATI.</h1>
+<p class="lead">Prova una tessera fedeltà digitale: QR, timbri e riscatto dimostrativo, nello stesso browser.</p>
+<div class="hero-actions">
+<button class="button primary" id="join-btn" type="button">Crea tessera di prova</button>
+<button class="button secondary" id="demo-member-btn" type="button">Apri profilo demo</button>
+</div>
+</div>
+<div class="reward-card dark-card">
+<span class="card-label">COME FUNZIONA</span>
+<div class="steps">
+<div><strong>01</strong><p>Registrati in pochi secondi.</p></div>
+<div><strong>02</strong><p>Ricevi il tuo QR personale.</p></div>
+<div><strong>03</strong><p>Mostralo a ogni visita.</p></div>
+<div><strong>04</strong><p>Al 6° timbro sblocchi il premio.</p></div>
+</div>
+</div>
+</section>
+<section aria-labelledby="signup-title" class="panel hidden" id="signup-view">
+<button class="back-link" data-back="" type="button">← Torna indietro</button>
+<div class="panel-grid">
+<div>
+<p class="eyebrow">ISCRIZIONE</p>
+<h2 id="signup-title">IL TUO CLUB.<br/>IL TUO QR.</h2>
+<p class="muted">Crea una tessera di prova con un nome inventato. Nessuna iscrizione reale, nessun dato inviato a Beer Hops.</p>
+</div>
+<form class="signup-form" id="signup-form">
+<label>Nome fittizio <input autocomplete="off" id="member-name" maxlength="40" name="name" placeholder="Visitatore demo" required="" type="text"/>
+</label>
+<label class="check"><input id="privacy-check" required="" type="checkbox"/> <span>Accetto di partecipare a questa simulazione dimostrativa.</span></label>
+<button class="button primary full" type="submit">Crea il mio QR</button>
+</form>
+</div>
+</section>
+<section aria-labelledby="wallet-title" class="panel hidden" id="wallet-view">
+<div class="wallet-head">
+<div>
+<p class="eyebrow">MEMBER WALLET</p>
+<h2 id="wallet-title">CIAO, <span id="wallet-name">MARIO</span>.</h2>
+<p class="muted">Quando ordini, apri questa tessera e mostra il QR allo staff.</p>
+</div>
+<button class="button secondary compact" id="new-member-btn" type="button">Nuovo profilo</button>
+</div>
+<div class="wallet-grid">
+<article class="member-card dark-card" id="member-card">
+<div class="member-card-top">
+<span>BEER HOPS CLUB</span>
+<span id="member-id">BH-000000</span>
+</div>
+<div class="scan-ready-pill"><span></span> PRONTO DA SCANSIONARE</div>
+<div class="qr-wrap"><div aria-label="QR personale del membro" id="member-qr"></div></div>
+<p class="qr-note">QR personale · demo</p>
+<button class="button secondary full qr-present-btn" id="present-qr" type="button">Mostra QR al banco</button>
+</article>
+<article class="progress-card">
+<span class="card-label">IL TUO PERCORSO</span>
+<div class="progress-number"><strong id="stamp-count">0</strong><span>/ 6 TIMBRI</span></div>
+<div aria-label="Progressi fedeltà" class="stamps" id="stamps"></div>
+<p id="progress-copy">Ti mancano 6 visite per sbloccare il premio.</p>
+<div class="reward-status" id="reward-status">
+<span>PREMIO</span>
+<strong>1 consumazione selezionata*</strong>
+<small>*Esempio dimostrativo, non offerta reale.</small>
+</div>
+</article>
+</div>
+</section>
+<section aria-labelledby="staff-title" class="panel hidden" id="staff-view">
+<div class="wallet-head">
+<div>
+<p class="eyebrow">STAFF DEMO</p>
+<h2 id="staff-title">GESTISCI I TIMBRI.</h2>
+<p class="muted">Scansiona il QR del cliente oppure cerca il codice tessera manualmente.</p>
+</div>
+<button class="button secondary compact" id="customer-switch" type="button">Vista cliente</button>
+</div>
+<div class="staff-grid">
+<article class="staff-search">
+<span class="card-label">IDENTIFICA MEMBRO</span>
+<button class="scan-launch" id="open-scanner" type="button">
+<span aria-hidden="true" class="scan-launch-icon">⌗</span>
+<span><strong>Scansiona QR</strong><small>Apri fotocamera / demo scanner</small></span>
+<span aria-hidden="true">→</span>
+</button>
+<div class="manual-divider"><span>oppure</span></div>
+<label>Codice tessera
+            <input autocomplete="off" id="staff-code" placeholder="BH-XXXXXX" type="text"/>
+</label>
+<div class="staff-actions-row">
+<button class="button primary" id="staff-find" type="button">Apri tessera</button>
+<button class="button secondary" id="staff-demo" type="button">Carica demo</button>
+</div>
+</article>
+<article class="staff-member hidden" id="staff-member">
+<div class="staff-member-head">
+<div><span class="card-label">MEMBRO</span><h3 id="staff-name">—</h3><p id="staff-id">—</p></div>
+<div class="staff-big"><strong id="staff-stamps">0</strong><span>/ 6</span></div>
+</div>
+<div class="staff-buttons">
+<button class="button primary" id="add-stamp" type="button">+ Aggiungi timbro</button>
+<button class="button secondary" id="remove-stamp" type="button">− Rimuovi</button>
+<button class="button reward" id="redeem-reward" type="button">Riscatta premio</button>
+</div>
+<p aria-live="polite" class="tiny" id="staff-message"></p>
+</article>
+</div>
+</section>
+<section aria-labelledby="scan-title" class="scanner-view hidden" id="scan-view">
+<div class="scanner-topbar">
+<button aria-label="Chiudi scanner" class="scanner-close" id="close-scanner" type="button">×</button>
+<div><span>BEER HOPS CLUB</span><strong>QR SCANNER</strong></div>
+<span class="scanner-secure">● LIVE</span>
+</div>
+<div class="scanner-stage">
+<video aria-label="Anteprima fotocamera per scansione QR" id="scanner-video" muted="" playsinline=""></video>
+<div aria-hidden="true" class="scanner-placeholder" id="scanner-placeholder"><div class="scanner-grid-art"></div></div>
+<div class="scanner-vignette"></div>
+<div aria-hidden="true" class="scan-frame"><i></i><i></i><i></i><i></i><span class="scan-line"></span></div>
+<div class="scanner-copy">
+<p class="eyebrow">SCANSIONA TESSERA</p>
+<h2 id="scan-title">INQUADRA<br/>IL QR.</h2>
+<p id="scanner-status">Allinea il QR personale del cliente all'interno del riquadro.</p>
+</div>
+</div>
+<div class="scanner-controls">
+<button class="button primary" id="start-camera" type="button">Attiva fotocamera</button>
+<button class="button secondary" id="simulate-scan" type="button">Simula QR demo</button>
+<button class="scanner-manual-toggle" id="scanner-manual-toggle" type="button">Inserisci codice manualmente</button>
+<div class="scanner-manual hidden" id="scanner-manual">
+<input aria-label="Codice tessera da cercare" autocomplete="off" id="scanner-code" placeholder="BH-XXXXXX" type="text"/>
+<button class="button secondary" id="scanner-open-code" type="button">Apri</button>
+</div>
+</div>
+<div aria-live="polite" class="scan-success hidden" id="scan-success" role="status">
+<div class="success-check">✓</div>
+<span>QR RICONOSCIUTO</span>
+<strong id="scan-success-name">Mario</strong>
+<p id="scan-success-code">BH-DEMO01</p>
+</div>
+</section>
+</main>
+<div aria-label="QR tessera a schermo intero" aria-modal="true" class="qr-present-overlay hidden" id="qr-present-overlay" role="dialog">
+<button aria-label="Chiudi QR" class="qr-present-close" id="qr-present-close" type="button">×</button>
+<p>BEER HOPS CLUB</p>
+<div class="present-qr-box" id="present-qr-box"></div>
+<strong id="present-member-code">BH-000000</strong>
+<span>Mostra questo codice allo staff</span>
+</div>
+<footer class="club-footer">
+<p>Beer Hops Club · concept dimostrativo non commissionato</p>
+<a href="../">Torna al sito Beer Hops ↗</a>
+</footer>
 </body>
 </html>

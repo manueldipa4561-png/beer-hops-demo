@@ -19,19 +19,25 @@
   let activeMember = null;
   let scanSuccessTimer = null;
 
+  const memory = new Map();
+  const storage = {
+    getItem(key) { try { return localStorage.getItem(key) ?? memory.get(key) ?? null; } catch { return memory.get(key) ?? null; } },
+    setItem(key,value) { memory.set(key,value); try { localStorage.setItem(key,value); } catch { $('storage-status').textContent='Salvataggio locale non disponibile: la prova dura fino alla chiusura della pagina.'; } },
+    removeItem(key) { memory.delete(key); try { localStorage.removeItem(key); } catch {} }
+  };
   function members() {
-    try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+    try { return JSON.parse(storage.getItem(STORAGE_KEY) || '{}'); }
     catch { return {}; }
   }
 
   function save(all) {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+    storage.setItem(STORAGE_KEY, JSON.stringify(all));
   }
 
   function ensureDemo() {
     const all = members();
     if (!all[DEMO_ID]) {
-      all[DEMO_ID] = { id: DEMO_ID, name: 'Mario', email: 'demo@beerhops.club', stamps: 4, rewardRedeemed: false };
+      all[DEMO_ID] = { id: DEMO_ID, name: 'Mario', stamps: 4, rewardRedeemed: false };
       save(all);
     }
     return all[DEMO_ID];
@@ -58,7 +64,7 @@
     Object.values(views).forEach((node) => node?.classList.add('hidden'));
     views[name]?.classList.remove('hidden');
     document.body.classList.toggle('scanner-open', name === 'scan');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   }
 
   function makeId() {
@@ -129,7 +135,7 @@
   function openMember(id) {
     const member = members()[id];
     if (!member) return false;
-    localStorage.setItem(ACTIVE_KEY, id);
+    storage.setItem(ACTIVE_KEY, id);
     renderWallet(member);
     show('wallet');
     return true;
@@ -157,7 +163,7 @@
     all[id] = member;
     save(all);
     renderStaff(member);
-    if (localStorage.getItem(ACTIVE_KEY) === id) renderWallet(member);
+    if (storage.getItem(ACTIVE_KEY) === id) renderWallet(member);
   }
 
   function parseMemberId(raw) {
@@ -209,7 +215,7 @@
         success.classList.remove('success-active', 'success-exit');
         renderStaff(member);
         show('staff');
-        $('staff-member')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        $('staff-member')?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
       }, 290);
     }, 1750);
 
@@ -280,12 +286,12 @@
 
   $('signup-form')?.addEventListener('submit', (event) => {
     event.preventDefault();
+    if (!$('member-name').value.trim()) { $('member-name').setCustomValidity('Inserisci un nome fittizio.'); $('member-name').reportValidity(); return; }
     const id = makeId();
     const all = members();
     all[id] = {
       id,
       name: $('member-name').value.trim(),
-      email: $('member-email').value.trim(),
       stamps: 0,
       rewardRedeemed: false
     };
@@ -306,7 +312,7 @@
 
   $('staff-switch')?.addEventListener('click', () => show('staff'));
   $('customer-switch')?.addEventListener('click', () => {
-    const id = localStorage.getItem(ACTIVE_KEY);
+    const id = storage.getItem(ACTIVE_KEY);
     if (!id || !openMember(id)) show('landing');
   });
 
@@ -363,6 +369,8 @@
   document.addEventListener('visibilitychange', () => { if (document.hidden) stopCamera(); });
   window.addEventListener('pagehide', stopCamera);
 
+  $('member-name').addEventListener('input',()=> $('member-name').setCustomValidity(''));
+  $('reset-demo').addEventListener('click',()=>{stopCamera();storage.removeItem(STORAGE_KEY);storage.removeItem(ACTIVE_KEY);activeMember=null;ensureDemo();$('signup-form').reset();$('staff-member').classList.add('hidden');show('landing');$('storage-status').textContent='Simulazione azzerata. La tessera esempio riparte da 4 timbri.';});
   ensureDemo();
   const requested = new URLSearchParams(window.location.search).get('member');
   if (requested && openMember(requested.toUpperCase())) return;

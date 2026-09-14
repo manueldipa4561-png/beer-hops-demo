@@ -50,3 +50,7 @@ Then deploy the repository from the `main` branch.
 ## Important
 
 This repository is an unsolicited website concept / demo. It should not be presented as the official Beer Hops website unless the business owner approves and adopts it.
+
+
+## Versione pacchetto
+La configurazione attuale è descritta in [DEMO_SCOPE.md](DEMO_SCOPE.md). Questa specifica prevale sull’elenco iniziale delle funzionalità sopra riportato.
