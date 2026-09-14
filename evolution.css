@@ -1,1 +1,186 @@
 a:focus-visible,button:focus-visible{outline:3px solid #b7dc54;outline-offset:5px}.section{padding-top:80px;padding-bottom:80px}.demo-notice{padding:18px 5%;font-size:15px;line-height:1.6;color:#ecf2dc;background:#202818;border-bottom:1px solid #58643d;margin:0}.section-kicker p,.eyebrow,.stock-tag{font-size:13px}.reveal{opacity:1;transform:none}.nojs-nav{padding:100px 5% 20px;display:flex;gap:24px;flex-wrap:wrap}.site-footer{padding-bottom:100px}.mobile-bar{position:static!important}.visit-actions{flex-wrap:wrap}.hero-actions{flex-wrap:wrap}.hero-copy,.story-title,.story-copy,.experience-panel,.selection-heading,.contact-card{min-width:0}@media(max-width:900px){.main-nav{max-height:100dvh;overflow-y:auto;padding-bottom:max(80px,calc(28px + env(safe-area-inset-bottom)))}.main-nav a{overflow-wrap:anywhere}}@media(max-width:640px){.section{padding-top:50px;padding-bottom:50px}.hero h1{font-size:clamp(66px,20vw,110px)}.demo-notice{font-size:14px}.visit-heading h2{font-size:clamp(40px,12vw,70px)}.hero-actions .button,.visit-actions .button{max-width:100%}.contact-links a strong{overflow-wrap:anywhere}.closing-copy h2{overflow-wrap:anywhere}.site-footer{padding-bottom:max(76px,calc(44px + env(safe-area-inset-bottom)))}}@media(max-width:360px){.hero h1{font-size:clamp(62px,22vw,82px)}.story-title h2,.experience-copy h2,.selection-heading h2,.format-card h2,.social-copy h2,.gallery-head h2,.reviews-copy h2,.visit-heading h2{font-size:clamp(40px,13vw,52px)}.gallery-grid{grid-template-columns:1fr}.gallery-item,.gallery-item:nth-child(n){grid-column:1;aspect-ratio:1.25/1}.closing-copy h2{font-size:clamp(68px,22vw,88px)}.contact-card{padding-inline:16px}.map-card{min-height:360px}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* Signature CRAFT. AFTER DARK. gallery — preserve the restored Beer Hops identity,
+   but turn the former dead area into a deliberate photographic composition. */
+.gallery{
+  position:relative;
+  padding-top:44px;
+  overflow:clip;
+}
+.gallery-head{
+  margin-bottom:clamp(30px,3.5vw,52px);
+}
+.gallery-head>p{
+  max-width:38ch;
+}
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  grid-template-rows:repeat(2,clamp(300px,26vw,390px)) clamp(230px,19vw,290px);
+  grid-auto-rows:unset;
+  gap:clamp(10px,1vw,16px);
+  perspective:1200px;
+  isolation:isolate;
+}
+.gallery-item,
+.gallery-item:nth-child(n){
+  min-width:0;
+  min-height:0;
+  margin:0;
+  position:relative;
+  grid-row:auto;
+  overflow:hidden;
+  background:#111410;
+  border:1px solid rgba(243,236,217,.12);
+  transform-origin:center;
+  backface-visibility:hidden;
+  transition:border-color .3s ease,filter .3s ease;
+}
+.gallery-item:nth-child(1){grid-column:1 / span 8;grid-row:1 / span 2}
+.gallery-item:nth-child(2){grid-column:9 / span 4;grid-row:1}
+.gallery-item:nth-child(3){grid-column:9 / span 4;grid-row:2}
+.gallery-item:nth-child(4){grid-column:1 / span 4;grid-row:3}
+.gallery-item:nth-child(5){grid-column:5 / span 4;grid-row:3}
+.gallery-item:nth-child(6){grid-column:9 / span 4;grid-row:3}
+.gallery-item img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter:saturate(.76) contrast(1.05) brightness(.8);
+  transition:transform .55s var(--ease),filter .4s ease;
+  backface-visibility:hidden;
+}
+.gallery-item:nth-child(1) img{object-position:52% 48%}
+.gallery-item:nth-child(2) img{object-position:50% 54%}
+.gallery-item:nth-child(3) img{object-position:56% 50%}
+.gallery-item:nth-child(4) img{object-position:52% 52%}
+.gallery-item:nth-child(5) img{object-position:50% 48%}
+.gallery-item:nth-child(6) img{object-position:50% 52%}
+.gallery-item::after{
+  background:linear-gradient(180deg,rgba(5,7,5,.02) 38%,rgba(5,7,5,.68) 100%);
+}
+.gallery-item figcaption{
+  left:clamp(14px,1.4vw,22px);
+  bottom:clamp(13px,1.4vw,20px);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.16em;
+  color:rgba(243,236,217,.84);
+  text-shadow:0 3px 16px rgba(0,0,0,.45);
+  backface-visibility:hidden;
+}
+.gallery-item figcaption::before{
+  content:"";
+  width:24px;
+  height:1px;
+  flex:0 0 auto;
+  background:var(--green);
+}
+
+@media(hover:hover) and (pointer:fine) and (min-width:901px){
+  .gallery-item{
+    transform-style:preserve-3d;
+    will-change:transform;
+  }
+  .gallery-item img{
+    transform:translateZ(0) scale(1.002);
+  }
+  .gallery-item:hover{
+    border-color:rgba(168,213,74,.36);
+  }
+  .gallery-item:hover img{
+    transform:translateZ(7px) scale(1.018);
+    filter:saturate(.9) contrast(1.05) brightness(.88);
+  }
+  .gallery-item figcaption{
+    transform:translateZ(24px);
+  }
+}
+
+/* Compact laptop: keep the same hierarchy, with less aggressive overlap and tilt room. */
+@media(min-width:901px) and (max-width:1180px){
+  .gallery-grid{
+    grid-template-columns:minmax(0,1.12fr) minmax(300px,.88fr);
+    grid-template-rows:repeat(4,clamp(220px,24vw,290px));
+    gap:12px;
+  }
+  .gallery-item:nth-child(1){grid-column:1;grid-row:1 / span 2}
+  .gallery-item:nth-child(2){grid-column:2;grid-row:1}
+  .gallery-item:nth-child(3){grid-column:2;grid-row:2}
+  .gallery-item:nth-child(4){grid-column:1;grid-row:3}
+  .gallery-item:nth-child(5){grid-column:1;grid-row:4}
+  .gallery-item:nth-child(6){grid-column:2;grid-row:3 / span 2}
+}
+
+/* Tablet: preserve one strong lead image, then let the supporting photographs breathe. */
+@media(max-width:900px){
+  .gallery{
+    padding-top:30px;
+  }
+  .gallery-head{
+    margin-bottom:30px;
+  }
+  .gallery-grid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-template-rows:none;
+    grid-auto-rows:auto;
+    gap:10px;
+    perspective:none;
+  }
+  .gallery-item,
+  .gallery-item:nth-child(n){
+    grid-column:auto;
+    grid-row:auto;
+    transform:none!important;
+  }
+  .gallery-item:nth-child(1){grid-column:1 / -1;aspect-ratio:16/10}
+  .gallery-item:nth-child(2),
+  .gallery-item:nth-child(3){aspect-ratio:4/5}
+  .gallery-item:nth-child(4){grid-column:1 / -1;aspect-ratio:16/9}
+  .gallery-item:nth-child(5),
+  .gallery-item:nth-child(6){aspect-ratio:1/1}
+  .gallery-item figcaption{
+    transform:none;
+  }
+}
+
+/* Phones: no 3D dependency — a large, varied editorial sequence instead. */
+@media(max-width:640px){
+  .gallery{
+    padding-top:24px;
+  }
+  .gallery-head{
+    margin-bottom:24px;
+  }
+  .gallery-grid{
+    grid-template-columns:1fr;
+    gap:9px;
+  }
+  .gallery-item,
+  .gallery-item:nth-child(n){
+    grid-column:1;
+    grid-row:auto;
+    min-height:0;
+  }
+  .gallery-item:nth-child(1){aspect-ratio:4/3}
+  .gallery-item:nth-child(2){aspect-ratio:4/5}
+  .gallery-item:nth-child(3){aspect-ratio:3/2}
+  .gallery-item:nth-child(4){aspect-ratio:4/3}
+  .gallery-item:nth-child(5){aspect-ratio:16/10}
+  .gallery-item:nth-child(6){aspect-ratio:4/5}
+  .gallery-item figcaption{
+    font-size:8px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .gallery-item,
+  .gallery-item img,
+  .gallery-item figcaption{
+    transform:none!important;
+    transition:none!important;
+  }
+}
