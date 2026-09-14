@@ -75,19 +75,21 @@
         <div>
           <p class="eyebrow">MEMBER WALLET</p>
           <h2 id="wallet-title">CIAO, <span id="wallet-name">MARIO</span>.</h2>
-          <p class="muted">Mostra questo QR allo staff per identificare la tua tessera.</p>
+          <p class="muted">Quando ordini, apri questa tessera e mostra il QR allo staff.</p>
         </div>
         <button class="button secondary compact" id="new-member-btn" type="button">Nuovo profilo</button>
       </div>
 
       <div class="wallet-grid">
-        <article class="member-card dark-card">
+        <article class="member-card dark-card" id="member-card">
           <div class="member-card-top">
             <span>BEER HOPS CLUB</span>
             <span id="member-id">BH-000000</span>
           </div>
+          <div class="scan-ready-pill"><span></span> PRONTO DA SCANSIONARE</div>
           <div class="qr-wrap"><div id="member-qr" aria-label="QR personale del membro"></div></div>
           <p class="qr-note">QR personale · demo</p>
+          <button class="button secondary full qr-present-btn" id="present-qr" type="button">Mostra QR al banco</button>
         </article>
 
         <article class="progress-card">
@@ -109,14 +111,20 @@
         <div>
           <p class="eyebrow">STAFF DEMO</p>
           <h2 id="staff-title">GESTISCI I TIMBRI.</h2>
-          <p class="muted">Simulazione front-end: su un progetto reale questa area sarebbe protetta da login e collegata a un database.</p>
+          <p class="muted">Scansiona il QR del cliente oppure cerca il codice tessera manualmente.</p>
         </div>
         <button class="button secondary compact" id="customer-switch" type="button">Vista cliente</button>
       </div>
 
       <div class="staff-grid">
         <article class="staff-search">
-          <span class="card-label">CERCA MEMBRO</span>
+          <span class="card-label">IDENTIFICA MEMBRO</span>
+          <button class="scan-launch" id="open-scanner" type="button">
+            <span class="scan-launch-icon" aria-hidden="true">⌗</span>
+            <span><strong>Scansiona QR</strong><small>Apri fotocamera / demo scanner</small></span>
+            <span aria-hidden="true">→</span>
+          </button>
+          <div class="manual-divider"><span>oppure</span></div>
           <label>Codice tessera
             <input id="staff-code" type="text" placeholder="BH-XXXXXX" autocomplete="off" />
           </label>
@@ -124,7 +132,6 @@
             <button class="button primary" id="staff-find" type="button">Apri tessera</button>
             <button class="button secondary" id="staff-demo" type="button">Carica demo</button>
           </div>
-          <p class="tiny">Per la demo puoi copiare il codice mostrato sotto al QR cliente.</p>
         </article>
 
         <article class="staff-member hidden" id="staff-member">
@@ -141,7 +148,57 @@
         </article>
       </div>
     </section>
+
+    <section class="scanner-view hidden" id="scan-view" aria-labelledby="scan-title">
+      <div class="scanner-topbar">
+        <button class="scanner-close" id="close-scanner" type="button" aria-label="Chiudi scanner">×</button>
+        <div><span>BEER HOPS CLUB</span><strong>QR SCANNER</strong></div>
+        <span class="scanner-secure">● LIVE</span>
+      </div>
+
+      <div class="scanner-stage">
+        <video id="scanner-video" playsinline muted aria-label="Anteprima fotocamera per scansione QR"></video>
+        <div class="scanner-placeholder" id="scanner-placeholder" aria-hidden="true">
+          <div class="scanner-grid-art"></div>
+        </div>
+        <div class="scanner-vignette"></div>
+        <div class="scan-frame" aria-hidden="true">
+          <i></i><i></i><i></i><i></i>
+          <span class="scan-line"></span>
+        </div>
+        <div class="scanner-copy">
+          <p class="eyebrow">SCANSIONA TESSERA</p>
+          <h2 id="scan-title">INQUADRA<br>IL QR.</h2>
+          <p id="scanner-status">Allinea il QR personale del cliente all'interno del riquadro.</p>
+        </div>
+      </div>
+
+      <div class="scanner-controls">
+        <button class="button primary" id="start-camera" type="button">Attiva fotocamera</button>
+        <button class="button secondary" id="simulate-scan" type="button">Simula QR demo</button>
+        <button class="scanner-manual-toggle" id="scanner-manual-toggle" type="button">Inserisci codice manualmente</button>
+        <div class="scanner-manual hidden" id="scanner-manual">
+          <input id="scanner-code" type="text" placeholder="BH-XXXXXX" autocomplete="off" />
+          <button class="button secondary" id="scanner-open-code" type="button">Apri</button>
+        </div>
+      </div>
+
+      <div class="scan-success hidden" id="scan-success" role="status" aria-live="polite">
+        <div class="success-check">✓</div>
+        <span>QR RICONOSCIUTO</span>
+        <strong id="scan-success-name">Mario</strong>
+        <p id="scan-success-code">BH-DEMO01</p>
+      </div>
+    </section>
   </main>
+
+  <div class="qr-present-overlay hidden" id="qr-present-overlay" role="dialog" aria-modal="true" aria-label="QR tessera a schermo intero">
+    <button class="qr-present-close" id="qr-present-close" type="button" aria-label="Chiudi QR">×</button>
+    <p>BEER HOPS CLUB</p>
+    <div class="present-qr-box" id="present-qr-box"></div>
+    <strong id="present-member-code">BH-000000</strong>
+    <span>Mostra questo codice allo staff</span>
+  </div>
 
   <footer class="club-footer">
     <p>Beer Hops Club · concept dimostrativo non commissionato</p>
