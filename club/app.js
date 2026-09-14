@@ -17,6 +17,7 @@
   let detector = null;
   let scanning = false;
   let activeMember = null;
+  let scanSuccessTimer = null;
 
   function members() {
     try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
@@ -42,6 +43,14 @@
     cameraStream = null;
     const video = $('scanner-video');
     if (video) video.srcObject = null;
+  }
+
+  function resetScanSuccess() {
+    if (scanSuccessTimer) clearTimeout(scanSuccessTimer);
+    scanSuccessTimer = null;
+    const success = $('scan-success');
+    success?.classList.add('hidden');
+    success?.classList.remove('success-active', 'success-exit');
   }
 
   function show(name) {
@@ -168,7 +177,7 @@
   }
 
   function openScanner() {
-    $('scan-success').classList.add('hidden');
+    resetScanSuccess();
     $('scanner-manual').classList.add('hidden');
     scannerStatus('Allinea il QR personale del cliente all\'interno del riquadro.');
     show('scan');
@@ -180,15 +189,30 @@
       scannerStatus('QR letto, ma questa tessera non è presente nel browser demo. Prova BH-DEMO01.');
       return false;
     }
+
     stopCamera();
+    const success = $('scan-success');
     $('scan-success-name').textContent = member.name;
     $('scan-success-code').textContent = member.id;
-    $('scan-success').classList.remove('hidden');
-    setTimeout(() => {
-      $('scan-success').classList.add('hidden');
-      renderStaff(member);
-      show('staff');
-    }, 1050);
+    success.classList.remove('hidden', 'success-exit');
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => success.classList.add('success-active'));
+    });
+
+    if ('vibrate' in navigator) navigator.vibrate?.([35, 45, 70]);
+
+    scanSuccessTimer = setTimeout(() => {
+      success.classList.add('success-exit');
+      setTimeout(() => {
+        success.classList.add('hidden');
+        success.classList.remove('success-active', 'success-exit');
+        renderStaff(member);
+        show('staff');
+        $('staff-member')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 290);
+    }, 1750);
+
     return true;
   }
 
@@ -331,7 +355,10 @@
   window.addEventListener('keydown', (event) => {
     if (event.key !== 'Escape') return;
     if (!$('qr-present-overlay').classList.contains('hidden')) hidePresentedQr();
-    else if (!views.scan.classList.contains('hidden')) show('staff');
+    else if (!views.scan.classList.contains('hidden')) {
+      resetScanSuccess();
+      show('staff');
+    }
   });
   document.addEventListener('visibilitychange', () => { if (document.hidden) stopCamera(); });
   window.addEventListener('pagehide', stopCamera);
