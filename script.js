@@ -164,3 +164,61 @@ if (!reducedMotion) {
 
 const year = $('#year');
 if (year) year.textContent = new Date().getFullYear();
+
+// Beer Hops Club: expose the loyalty + personalized QR demo directly from the current website.
+const clubStyles = document.createElement('link');
+clubStyles.rel = 'stylesheet';
+clubStyles.href = 'club-teaser.css';
+document.head.appendChild(clubStyles);
+
+if (mainNav && !mainNav.querySelector('.club-nav-link')) {
+  const clubNav = document.createElement('a');
+  clubNav.className = 'club-nav-link';
+  clubNav.href = '#club';
+  clubNav.textContent = 'Club';
+  clubNav.addEventListener('click', closeMenu);
+  const callLink = mainNav.querySelector('.nav-cta');
+  mainNav.insertBefore(clubNav, callLink || null);
+}
+
+const reviewsSection = $('.reviews');
+if (reviewsSection && !$('#club')) {
+  const clubSection = document.createElement('section');
+  clubSection.className = 'club-home-section';
+  clubSection.id = 'club';
+  clubSection.innerHTML = `
+    <div class="shell">
+      <div class="club-home-head">
+        <div>
+          <p class="club-home-kicker">BEER HOPS CLUB · LOYALTY CONCEPT</p>
+          <h2>BEVI.<br><em>TORNA.</em><br>PREMIATI.</h2>
+        </div>
+        <div class="club-home-intro">
+          <p>Un programma fedeltà direttamente dal sito: ogni cliente può creare il proprio profilo, ricevere un QR personale e accumulare timbri a ogni visita, senza scaricare un'app.</p>
+          <div class="club-home-actions">
+            <a class="button button-primary" href="club/">Prova il Club <span aria-hidden="true">↗</span></a>
+            <a class="button button-outline" href="club/?member=BH-DEMO01">Apri tessera demo <span aria-hidden="true">↗</span></a>
+          </div>
+          <p class="club-demo-note">Concept dimostrativo non commissionato. Premi e funzionalità non rappresentano un programma reale attivo di Beer Hops.</p>
+        </div>
+      </div>
+      <div class="club-home-demo">
+        <div class="club-phone" aria-label="Anteprima tessera fedeltà Beer Hops Club">
+          <div class="club-phone-top"><span>BEER HOPS CLUB</span><span>BH-DEMO01</span></div>
+          <div class="club-phone-card">
+            <small>MEMBER WALLET</small>
+            <h3>4 / 6 TIMBRI</h3>
+            <div class="club-mini-qr" aria-hidden="true"></div>
+            <div class="club-mini-progress" aria-hidden="true"><span class="on">✓</span><span class="on">✓</span><span class="on">✓</span><span class="on">✓</span><span>5</span><span>6</span></div>
+          </div>
+        </div>
+        <div class="club-home-features">
+          <article class="club-feature"><span>01 / PERSONAL QR</span><div><strong>Un QR unico per ogni cliente.</strong><p>Identifica la tessera digitale in pochi secondi.</p></div></article>
+          <article class="club-feature"><span>02 / DIGITAL STAMPS</span><div><strong>Timbri e progressi sempre visibili.</strong><p>Il cliente vede quanto manca alla ricompensa.</p></div></article>
+          <article class="club-feature"><span>03 / STAFF MODE</span><div><strong>Aggiungi, correggi, riscatta.</strong><p>Una vista dedicata simula la gestione dal locale.</p></div></article>
+          <article class="club-feature"><span>04 / NO APP</span><div><strong>Tutto dal browser.</strong><p>Mobile-first, semplice da aprire con un QR al banco.</p></div></article>
+        </div>
+      </div>
+    </div>`;
+  reviewsSection.parentNode.insertBefore(clubSection, reviewsSection);
+}
