@@ -1,36 +1,34 @@
 # Demo Evoluzione — €950
 
-Questa repository rappresenta il livello **Evoluzione** di Punto Due Studio: sito più profondo + **un solo modulo avanzato** con una ragione commerciale precisa e uno scope misurabile.
+Questa repository rappresenta il livello **Evoluzione** di Punto Due Studio: sito editoriale più profondo + **un solo modulo avanzato** con una ragione commerciale precisa e uno scope misurabile.
 
 ## Incluso
-- Sito editoriale principale + pagina Club, entro il limite massimo di 5 pagine.
-- Design e contenuti più approfonditi.
-- UN SOLO modulo avanzato: loyalty con QR personale, timbri digitali, vista cliente/staff e riscatto dimostrativo.
+- Sito editoriale principale + pagina HOPPASS, entro il limite massimo di 5 pagine.
+- Direzione visuale e contenuti più approfonditi, responsive mobile e SEO base.
+- **UN SOLO modulo avanzato: HOPPASS 3D**, evoluzione della precedente loyalty demo.
+- HOPPASS 3D comprende nello stesso modulo: QR personale, 6 timbri digitali, vista cliente/staff, riscatto dimostrativo e un artifact 3D WebGL che evolve in base ai timbri.
+- L'artifact 3D è parte dell'interfaccia del modulo loyalty: non costituisce un secondo sistema avanzato.
 - Nessun booking avanzato, PWA, CRM, POS, multi-sede, SMS automation, pagamenti o secondo modulo avanzato.
 - Due giri di revisione sullo scope concordato.
 
-## Demo e produzione
-La simulazione usa esclusivamente dati fittizi salvati nel browser. Nessuna email è richiesta. Il QR identifica una tessera locale e non sincronizza dispositivi. La vista staff è aperta e **non costituisce autenticazione**. Nessun premio è reale. Il reset elimina soltanto i dati della simulazione. Se lo storage è bloccato, la prova continua in memoria mostrando un avviso.
+## Natura della demo
+- HOPPASS è una simulazione non commissionata e non rappresenta un programma fedeltà realmente attivo di Beer Hops.
+- Tessere, timbri e stato demo vengono salvati solo nel browser tramite `localStorage`, con fallback in memoria quando lo storage non è disponibile.
+- La vista staff è deliberatamente aperta per consentire la prova del flusso e **non** rappresenta un'autenticazione di produzione.
+- Premi, nomi dei livelli e collectible sono concetti di interfaccia dimostrativi, non offerte reali del locale.
+- Una versione multi-dispositivo reale richiederebbe backend, autenticazione e gestione dati separati dallo scope di questa demo.
 
-Questa scelta è intenzionalmente demo-only: in una produzione multi-device non si deve usare `localStorage` come fonte dati condivisa. Se il modulo reale richiede dati condivisi servono database, autorizzazioni server e autenticazione staff appropriati.
+## HOPPASS 3D — comportamento
+- Il vessel è renderizzato in tempo reale con Three.js/WebGL sui dispositivi compatibili.
+- Drag/touch ruota l'artifact; controlli accessibili permettono la rotazione anche senza drag.
+- I livelli 00–06 permettono di esplorare visivamente la progressione senza modificare i timbri della tessera.
+- Il conteggio effettivo dei timbri guida il riempimento ambrato, i collectible e l'intensità della scena.
+- Sono previsti fallback statico, `prefers-reduced-motion`, DPR limitato, pausa fuori viewport e qualità mobile semplificata.
 
-## Acceptance criteria / QA
-- Aprire il profilo demo a 4 timbri.
-- Aggiungere timbri fino a 6 e impedire di superare il limite.
-- Riscattare il premio una sola volta per ciclo.
-- Rimuovere timbri e azzerare la simulazione.
-- Codice sconosciuto: stato di errore chiaro.
-- Storage non disponibile: fallback in memoria e messaggio esplicito.
-- Fotocamera: accesso solo dopo azione esplicita, gestione rifiuto/non supporto e stop quando la pagina viene nascosta.
-- Il codice manuale resta alternativa al QR.
-- Verifica dei flussi cliente/staff, stati vuoti/errori e responsive mobile.
-
-## Prima della produzione / handover
-- Definire prima il risultato commerciale del modulo e i criteri di accettazione.
-- Approvazione del locale, regole loyalty e trattamento dati verificati.
-- Backend soltanto se realmente necessario.
-- Mai esporre service key, password o segreti nel client o su GitHub.
-- Se ci sono dati condivisi: database + autorizzazioni server + autenticazione staff.
-- Documentare accessi, dipendenze esterne, eventuali costi terzi, rinnovi, proprietà degli account e responsabilità operative.
-- Dominio e servizi che devono appartenere al cliente restano intestati al cliente.
-- Nuove funzioni oltre il modulo loyalty sono un nuovo preventivo.
+## Criteri di accettazione
+- Il profilo demo `BH-DEMO01` parte da 4/6 timbri.
+- Lo staff può aggiungere fino a 6 timbri, rimuoverli e riscattare una volta per ciclo.
+- Codici non validi producono un messaggio chiaro.
+- Fotocamera solo su azione esplicita; inserimento manuale sempre disponibile.
+- Layout utilizzabile da 320 px in su senza dipendere dall'hover.
+- Se WebGL non è disponibile, il programma loyalty rimane utilizzabile e mostra un visual fallback premium.
