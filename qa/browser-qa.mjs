@@ -275,7 +275,6 @@ async function runFallback(name, setup) {
       overlayText.includes('BH-DEMO01') ? pass('present QR fallback') : fail('present QR fallback', overlayText);
     }
     await page.screenshot({ path: path.join(outDir, `fallback-${safeName(name)}.png`), fullPage: false });
-    // Request failures are expected because each fallback test deliberately blocks one dependency.
     if (logs.pageErrors.length) fail('page errors', logs.pageErrors.join(' | '));
   } catch (err) {
     fail('uncaught fallback exception', String(err?.stack || err));
@@ -323,3 +322,5 @@ fs.writeFileSync(path.join(outDir, 'summary.md'), md.join('\n'));
 await browser.close();
 console.log(md.join('\n'));
 if (!report.passed) process.exit(1);
+
+// Touch commit: workflow-trigger marker for real-browser QA.
