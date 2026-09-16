@@ -1,56 +1,54 @@
-# Beer Hops Pescara — Demo Website
+# Beer Hops Pescara — Flagship Demo
 
-Premium, responsive demo website concept for **Beer Hops**, a craft beer bar / craft beer shop in Pescara, Italy.
+Premium interactive demo website concept for **Beer Hops**, a craft beer bar / craft beer shop in Pescara, Italy.
 
-## What is included
+This project is no longer tied to a package tier. It is designed as a flagship portfolio demonstration for Punto Due Studio: custom art direction, responsive UX, interactive motion and a WebGL hero with progressive fallbacks.
 
-- Static HTML, CSS and vanilla JavaScript
-- No build step required
-- Responsive desktop, tablet and mobile layouts
-- Scroll reveal animations and subtle interactive effects
-- Interactive beer-country filters
-- Dynamic open/closed indicator using Europe/Rome time
-- BarOrPub structured data for search engines
-- Netlify-ready configuration
+## Current direction
+
+- Immersive craft identity built around charcoal, amber glass, hop-acid green and industrial steel.
+- Custom desktop and mobile compositions rather than a compressed desktop layout.
+- Three.js/WebGL hero with pointer/touch interaction, device-pixel-ratio limits and static visual fallback.
+- Scroll-linked kinetic typography and an abstract interactive pour sequence.
+- HOPPASS positioned as a digital collectible loyalty concept and linked to the existing Club demo.
+- Responsive behavior verified at 1440 px, 390 px and 320 px without horizontal overflow.
+- Reduced-motion support, semantic navigation, focusable controls and no hover-only essential interactions.
+- Netlify-ready static deployment with no build step.
 
 ## Public business information used
 
-The demo intentionally avoids inventing factual business information. Publicly available information used during the build includes:
+The demo intentionally avoids inventing factual business information. Public information used in the current experience includes:
 
 - **Business:** Beer Hops
 - **Address:** Via Piave 98, 65122 Pescara PE, Italy
 - **Phone:** +39 348 361 7588
 - **Email:** beer.hops.pescara@gmail.com
-- **Hours:** Monday closed; Tuesday–Sunday 18:00–01:00
 - **Positioning:** beer bar / birreria / craft beer shop
-- **Public tagline visible in the brand identity:** “Un nuovo modo di bere”
-- **Public online beer selection:** Italian, Belgian and Swedish craft beers. The demo menu shows only a subset of products visible on the public Deliveroo listing at build time.
+- **Public tagline:** “Un nuovo modo di bere”
+- **Public social identity:** craft beer focus, 6 draught lines, long drinks, wines and sparkling wines
+- **Instagram:** @beer_hops_pescara
 
-### Sources checked
+Availability, menus, opening hours and prices can change, so the main flagship experience deliberately avoids presenting them as permanent facts.
 
-- Beer Hops public Google business listing
-- Beer Hops public Facebook listing
-- Beer Hops Deliveroo menu
-- Tripadvisor public Beer Hops listing
-- OrariDiApertura24 public listing
+## Main files
 
-Opening hours, ratings, stock and prices can change. Re-check them before using this demo as a permanent production website.
+- `index.html` — metadata and lightweight app bootstrap
+- `boot.js` — loads the flagship page shell
+- `flagship-shell.html` — current page structure and content
+- `flagship.css` — flagship visual system and responsive layouts
+- `flagship.js` — interaction system, HOPPASS preview and Three.js hero
+- `club/` — existing HOPPASS / Club demonstration
+- `netlify.toml` — Netlify deployment configuration
 
-## Netlify deployment
+## Deployment
 
 No build command is needed.
 
-- **Base directory:** leave empty
-- **Build command:** leave empty
-- **Publish directory:** `.`
-- **Functions directory:** leave empty
-
-Then deploy the repository from the `main` branch.
+- Base directory: empty
+- Build command: empty
+- Publish directory: `.`
+- Branch: `main`
 
 ## Important
 
-This repository is an unsolicited website concept / demo. It should not be presented as the official Beer Hops website unless the business owner approves and adopts it.
-
-
-## Versione pacchetto
-La configurazione attuale è descritta in [DEMO_SCOPE.md](DEMO_SCOPE.md). Questa specifica prevale sull’elenco iniziale delle funzionalità sopra riportato.
+This is an unsolicited website concept / portfolio demo. It must not be represented as the official Beer Hops website unless the business owner approves and adopts it.
