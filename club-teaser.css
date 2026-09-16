@@ -52,3 +52,12 @@
 @media(max-width:700px){.hero-media::before{inset:0;background-image:url("https://d8j0ntlcm91z4.cloudfront.net/user_3JN4lq7KBj4c3qEQUgSkbrftgrd/hf_20260916_090655_669c0847-7e7a-45d6-a588-dbc4283fd267_min.webp");background-position:center 48%;filter:saturate(.9) contrast(1.05) brightness(.7)}.hero-overlay{background:linear-gradient(180deg,rgba(5,7,5,.56) 0%,rgba(5,7,5,.28) 32%,rgba(5,7,5,.88) 74%,#050705 100%)}.hero h1{font-size:clamp(76px,23vw,118px)}.hero-side{display:none}.club-home-section{padding:76px 0}.club-home-section .demo-notice{width:calc(100% - 28px);margin-bottom:36px}.club-home-head{gap:30px}.club-home-head h2{font-size:clamp(64px,20vw,98px)}.club-home-actions a{width:100%}.club-home-demo{margin-top:46px}.club-phone{min-height:540px;border-radius:24px}.club-home-features{grid-template-columns:1fr}.club-feature{min-height:210px}.club-mini-qr{width:84px;height:84px;border-width:8px}.club-phone-card{left:14px;right:14px;bottom:14px;padding:18px}}
 @media(max-width:390px){.hero h1{font-size:72px}.club-home-head h2{font-size:64px}.club-phone{min-height:480px}.club-feature{padding:20px}.club-phone-top{font-size:8px}.club-mini-progress{gap:4px}}
 @media(prefers-reduced-motion:reduce){.hero-media::before,.club-phone::before,.club-feature{transition:none!important;transform:none!important}}
+
+/* Final responsive QA: there are three persistent actions on mobile. */
+@media(max-width:640px){
+  .mobile-bar{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .mobile-bar a{min-width:0;padding-inline:4px;text-align:center;white-space:nowrap}
+}
+@media(max-width:360px){
+  .mobile-bar a{font-size:9px;letter-spacing:.07em}
+}
