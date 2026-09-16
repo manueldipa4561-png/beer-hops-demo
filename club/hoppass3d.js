@@ -38,7 +38,10 @@ if(host&&world){
   try{renderer=new THREE.WebGLRenderer({alpha:true,antialias:!coarse.matches,powerPreference:coarse.matches?'low-power':'high-performance'});}catch(error){world.dataset.render='fallback';}
 
   if(!renderer){
+    window.__HOPPASS3D_READY__=false;
+    world.classList.remove('is-webgl');
     world.classList.add('is-fallback');
+    world.dataset.render='fallback';
   }else{
     const scene=new THREE.Scene();
     scene.fog=new THREE.FogExp2(0x080a08,.045);
@@ -107,7 +110,7 @@ if(host&&world){
     const valueObserver=new MutationObserver(readProgress);['stamp-count','staff-stamps'].forEach(id=>{const node=document.getElementById(id);if(node)valueObserver.observe(node,{childList:true,subtree:true,characterData:true});});
     const viewObserver=new MutationObserver(readProgress);['landing-view','wallet-view','staff-view'].forEach(id=>{const node=document.getElementById(id);if(node)viewObserver.observe(node,{attributes:true,attributeFilter:['class']});});
     new ResizeObserver(resize).observe(host);new IntersectionObserver(([entry])=>{visible=entry.isIntersecting;if(visible)requestRender();else{cancelAnimationFrame(raf);raf=0;}},{threshold:0}).observe(world);document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);raf=0;}else requestRender();});reduced.addEventListener('change',requestRender);
-    renderer.domElement.addEventListener('webglcontextlost',event=>{event.preventDefault();world.classList.remove('is-webgl');world.classList.add('is-fallback');cancelAnimationFrame(raf);raf=0;});
-    world.classList.add('is-webgl');world.dataset.render='webgl';window.__HOPPASS3D_READY__=true;readProgress();resize();requestRender();
+    renderer.domElement.addEventListener('webglcontextlost',event=>{event.preventDefault();visible=false;window.__HOPPASS3D_READY__=false;world.dataset.render='fallback';world.classList.remove('is-webgl');world.classList.add('is-fallback');cancelAnimationFrame(raf);raf=0;});
+    world.classList.remove('is-fallback');world.classList.add('is-webgl');world.dataset.render='webgl';window.__HOPPASS3D_READY__=true;readProgress();resize();requestRender();
   }
 }
