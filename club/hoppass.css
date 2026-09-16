@@ -43,9 +43,11 @@ body.scanner-open .hoppass-world{display:none}.scanner-view{min-height:auto}.sca
 [data-hop-sync]{margin-top:14px;min-height:44px;padding:10px 14px;border:1px solid rgba(242,189,88,.28);border-radius:999px;background:transparent;color:var(--hop-amber-soft);font:700 11px/1.2 "DM Sans",sans-serif;cursor:pointer}
 [data-hop-sync]:hover,[data-hop-sync]:focus-visible{border-color:var(--hop-amber-soft)}
 .scanner-manual-toggle{min-height:44px;padding-block:10px}
-.qr-fallback{width:100%;height:100%;display:grid;place-items:center;align-content:center;gap:8px;text-align:center;color:#10130b}
+.qr-fallback{display:grid;place-items:center;align-content:center;gap:8px;text-align:center;color:#10130b}
+.qr-wrap .qr-fallback{width:100%;height:100%}
 .qr-fallback strong{font:800 18px/1 "Manrope",sans-serif;letter-spacing:.04em;overflow-wrap:anywhere}
 .qr-fallback small{max-width:20ch;color:#5d6258;font-size:10px;line-height:1.35}
+.hoppass-world.is-fallback #hoppass-3d-host{pointer-events:none}
 .hoppass-world.is-fallback .hoppass-rotate,.hoppass-world.is-fallback .hoppass-levels,.hoppass-world.is-fallback .hoppass-reset{opacity:.38;pointer-events:none}
 .hoppass-world.is-fallback .world-live{color:#aeb3aa}
 .hoppass-world.is-fallback .world-live::before{background:#7f867b;box-shadow:none}
