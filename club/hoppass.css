@@ -54,7 +54,7 @@ body.scanner-open .hoppass-world{display:none}.scanner-view{min-height:auto}.sca
 @media(pointer:coarse){
   .hoppass-levels button{min-height:44px}
 }
-@media(pointer:coarse) and (max-width:420px){
+@media(max-width:420px){
   .hoppass-levels{display:flex;overflow-x:auto;scrollbar-width:none;overscroll-behavior-x:contain;scroll-snap-type:x proximity}
   .hoppass-levels::-webkit-scrollbar{display:none}
   .hoppass-levels button{flex:0 0 44px;height:44px;scroll-snap-align:center}
