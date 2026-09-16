@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/browser-qa.yml'
       - 'qa/browser-qa.mjs'
+      - 'qa/browser-qa-verify.mjs'
       - 'index.html'
       - '*.css'
       - '*.js'
@@ -48,14 +49,14 @@ jobs:
           echo "Timed out waiting for the latest Beer Hops deployment."
           exit 1
 
-      - name: Run real Chromium QA
-        run: node qa/browser-qa.mjs
+      - name: Run corrected real Chromium verification
+        run: node qa/browser-qa-verify.mjs
 
       - name: Upload browser QA evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: beer-hops-browser-qa
-          path: qa-results/
+          name: beer-hops-browser-qa-verify
+          path: qa-results-verify/
           if-no-files-found: warn
           retention-days: 14
