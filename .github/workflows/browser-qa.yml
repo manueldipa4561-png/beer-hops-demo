@@ -1,0 +1,61 @@
+name: Beer Hops Browser QA
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/browser-qa.yml'
+      - 'qa/browser-qa.mjs'
+      - 'index.html'
+      - '*.css'
+      - '*.js'
+      - 'club/**'
+  workflow_dispatch:
+
+jobs:
+  browser-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      BASE_URL: https://joyful-sprinkles-4b402e.netlify.app
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Wait for latest Netlify deployment
+        shell: bash
+        run: |
+          set -euo pipefail
+          for i in $(seq 1 36); do
+            BODY="$(curl -fsSL "$BASE_URL/club/app.js" || true)"
+            if grep -q "LOADING 3D" <<< "$BODY"; then
+              echo "Latest QA-hardened Beer Hops deployment is live."
+              exit 0
+            fi
+            echo "Waiting for Netlify deployment ($i/36)..."
+            sleep 5
+          done
+          echo "Timed out waiting for the latest Beer Hops deployment."
+          exit 1
+
+      - name: Run real Chromium QA
+        run: node qa/browser-qa.mjs
+
+      - name: Upload browser QA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: beer-hops-browser-qa
+          path: qa-results/
+          if-no-files-found: warn
+          retention-days: 14
