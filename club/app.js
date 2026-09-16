@@ -303,12 +303,16 @@
     const live = world.querySelector('.world-live');
     const controls = [...world.querySelectorAll('[data-hop-level],[data-hop-rotate],[data-hop-reset]')];
     const syncUi = () => {
+      const ready = window.__HOPPASS3D_READY__ === true;
       const fallback = world.classList.contains('is-fallback') || world.dataset.render === 'fallback';
+      const pending = !ready && !fallback;
+      const disabled = pending || fallback;
       controls.forEach((button) => {
-        button.disabled = fallback;
-        button.setAttribute('aria-disabled', String(fallback));
+        button.disabled = disabled;
+        button.setAttribute('aria-disabled', String(disabled));
       });
-      if (live) live.textContent = fallback ? 'STATIC FALLBACK' : 'REAL-TIME 3D';
+      world.setAttribute('aria-busy', String(pending));
+      if (live) live.textContent = fallback ? 'STATIC FALLBACK' : pending ? 'LOADING 3D' : 'REAL-TIME 3D';
     };
     new MutationObserver(syncUi).observe(world, { attributes: true, attributeFilter: ['class', 'data-render'] });
     syncUi();
