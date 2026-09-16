@@ -20,7 +20,7 @@ if(fine&&!reduced){$$('.magnetic').forEach(el=>{el.addEventListener('pointermove
 
 const kinetic=$('.kinetic-line'),pourLab=$('.pour-lab'),vessel=$('.pour-vessel');
 let scrollTick=false,lastY=scrollY,scrollVelocity=0;
-function onScrollFrame(){scrollTick=false;const y=scrollY;scrollVelocity+=(y-lastY-scrollVelocity)*.18;lastY=y;if(kinetic){const r=kinetic.parentElement.getBoundingClientRect(),p=(innerHeight-r.top)/(innerHeight+r.height);kinetic.style.setProperty('--kinetic',`${(p-.5)*-220}px`)}if(pourLab&&vessel){const r=pourLab.getBoundingClientRect(),p=Math.max(0,Math.min(1,(innerHeight-r.top)/(innerHeight+r.height)));vessel.style.setProperty('--pour',`${34+p*48}%`)}}
+function onScrollFrame(){scrollTick=false;const y=scrollY;scrollVelocity+=(y-lastY-scrollVelocity)*.18;lastY=y;if(kinetic){const r=kinetic.parentElement.getBoundingClientRect(),p=(innerHeight-r.top)/(innerHeight+r.height);kinetic.style.setProperty('--kinetic',`${(p-.5)*-220}px`)}if(pourLab&&vessel){const r=pourLab.getBoundingClientRect(),mobilePour=innerWidth<=600,stickyTravel=Math.max(1,r.height-innerHeight),p=mobilePour?Math.max(0,Math.min(1,-r.top/stickyTravel)):Math.max(0,Math.min(1,(innerHeight-r.top)/(innerHeight+r.height)));vessel.style.setProperty('--pour',`${34+p*48}%`)}}
 addEventListener('scroll',()=>{if(!scrollTick){requestAnimationFrame(onScrollFrame);scrollTick=true}},{passive:true});onScrollFrame();
 
 const token=$('#hoppass-token'),level=$('#token-level');
