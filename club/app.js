@@ -85,13 +85,19 @@
   function renderQrInto(target, member, size = 240) {
     if (!target) return;
     target.innerHTML = '';
+    target.classList.remove('qr-fallback');
     if (window.QRCode) {
       new QRCode(target, {
         text: qrUrl(member), width: size, height: size,
         colorDark: '#0a0c0a', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.H
       });
     } else {
-      target.textContent = member.id;
+      target.classList.add('qr-fallback');
+      const code = document.createElement('strong');
+      const note = document.createElement('small');
+      code.textContent = member.id;
+      note.textContent = 'QR non disponibile · usa il codice tessera';
+      target.append(code, note);
     }
   }
 
@@ -280,6 +286,30 @@
     document.body.classList.remove('qr-presenting');
   }
 
+  function installHoppassFallbackGuard() {
+    const world = document.querySelector('.hoppass-world');
+    if (!world) return;
+    const live = world.querySelector('.world-live');
+    const controls = [...world.querySelectorAll('[data-hop-level],[data-hop-rotate],[data-hop-reset]')];
+    const syncUi = () => {
+      const fallback = world.classList.contains('is-fallback') || world.dataset.render === 'fallback';
+      controls.forEach((button) => {
+        button.disabled = fallback;
+        button.setAttribute('aria-disabled', String(fallback));
+      });
+      if (live) live.textContent = fallback ? 'STATIC FALLBACK' : 'REAL-TIME 3D';
+    };
+    new MutationObserver(syncUi).observe(world, { attributes: true, attributeFilter: ['class', 'data-render'] });
+    syncUi();
+    setTimeout(() => {
+      if (window.__HOPPASS3D_READY__) return;
+      world.classList.remove('is-webgl');
+      world.classList.add('is-fallback');
+      world.dataset.render = 'fallback';
+      syncUi();
+    }, 4500);
+  }
+
   $('join-btn')?.addEventListener('click', () => show('signup'));
   $('demo-member-btn')?.addEventListener('click', () => { ensureDemo(); openMember(DEMO_ID); });
   document.querySelectorAll('[data-back]').forEach((button) => button.addEventListener('click', () => show('landing')));
@@ -371,6 +401,7 @@
 
   $('member-name').addEventListener('input',()=> $('member-name').setCustomValidity(''));
   $('reset-demo').addEventListener('click',()=>{stopCamera();storage.removeItem(STORAGE_KEY);storage.removeItem(ACTIVE_KEY);activeMember=null;ensureDemo();$('signup-form').reset();$('staff-member').classList.add('hidden');show('landing');$('storage-status').textContent='Simulazione azzerata. La tessera esempio riparte da 4 timbri.';});
+  installHoppassFallbackGuard();
   ensureDemo();
   const requested = new URLSearchParams(window.location.search).get('member');
   if (requested && openMember(requested.toUpperCase())) return;
