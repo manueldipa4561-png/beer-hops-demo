@@ -18,6 +18,7 @@
   let scanning = false;
   let activeMember = null;
   let scanSuccessTimer = null;
+  let qrReturnFocus = null;
 
   const memory = new Map();
   const storage = {
@@ -45,10 +46,13 @@
 
   function stopCamera() {
     scanning = false;
+    detector = null;
     if (cameraStream) cameraStream.getTracks().forEach((track) => track.stop());
     cameraStream = null;
     const video = $('scanner-video');
     if (video) video.srcObject = null;
+    const placeholder = $('scanner-placeholder');
+    if (placeholder) placeholder.style.opacity = '1';
   }
 
   function resetScanSuccess() {
@@ -191,6 +195,8 @@
   function openScanner() {
     resetScanSuccess();
     $('scanner-manual').classList.add('hidden');
+    const placeholder = $('scanner-placeholder');
+    if (placeholder) placeholder.style.opacity = '1';
     scannerStatus('Allinea il QR personale del cliente all\'interno del riquadro.');
     show('scan');
   }
@@ -275,15 +281,20 @@
 
   function showPresentedQr() {
     if (!activeMember) return;
+    qrReturnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     $('present-member-code').textContent = activeMember.id;
     renderQrInto($('present-qr-box'), activeMember, 340);
     $('qr-present-overlay').classList.remove('hidden');
     document.body.classList.add('qr-presenting');
+    requestAnimationFrame(() => $('qr-present-close')?.focus());
   }
 
   function hidePresentedQr() {
     $('qr-present-overlay').classList.add('hidden');
     document.body.classList.remove('qr-presenting');
+    const target = qrReturnFocus;
+    qrReturnFocus = null;
+    if (target?.isConnected) target.focus();
   }
 
   function installHoppassFallbackGuard() {
@@ -347,7 +358,7 @@
   });
 
   $('open-scanner')?.addEventListener('click', openScanner);
-  $('close-scanner')?.addEventListener('click', () => show('staff'));
+  $('close-scanner')?.addEventListener('click', () => { resetScanSuccess(); show('staff'); });
   $('start-camera')?.addEventListener('click', startCamera);
   $('simulate-scan')?.addEventListener('click', () => {
     ensureDemo();
@@ -389,8 +400,14 @@
   }));
 
   window.addEventListener('keydown', (event) => {
+    const overlayOpen = !$('qr-present-overlay').classList.contains('hidden');
+    if (overlayOpen && event.key === 'Tab') {
+      event.preventDefault();
+      $('qr-present-close')?.focus();
+      return;
+    }
     if (event.key !== 'Escape') return;
-    if (!$('qr-present-overlay').classList.contains('hidden')) hidePresentedQr();
+    if (overlayOpen) hidePresentedQr();
     else if (!views.scan.classList.contains('hidden')) {
       resetScanSuccess();
       show('staff');
