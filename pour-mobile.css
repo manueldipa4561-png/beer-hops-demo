@@ -1,0 +1,7 @@
+/* Mobile Perfect Pour refinement: preserve the existing composition while giving the sticky interaction a longer, deliberate scroll runway. */
+@media (max-width: 600px) {
+  .pour-lab {
+    min-height: 152vh;
+    min-height: 152svh;
+  }
+}
